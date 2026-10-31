@@ -100,12 +100,31 @@ public class ReservationService {
   }
 
   // Ejercicio 8
-  public Reservation addReservationIfNotDuplicate(
+ public Reservation addReservationIfNotDuplicate(
       List<Reservation> existingReservations,
       Reservation newReservation,
       ReservationDao reservationDao)
       throws DuplicateReservationException, DataAccessException {
-    throw new UnsupportedOperationException("Ejercicio 8: implement addReservationIfNotDuplicate");
+
+      // 1. Extraemos los IDs de la nueva reserva
+      String newUserId = newReservation.getOwner().getId();
+      String newServiceId = newReservation.getService().getId();
+
+      // 2. Recorremos la lista de reservas existentes
+      for (Reservation resActual : existingReservations) {
+          String actualUserId = resActual.getOwner().getId();
+          String actualServiceId = resActual.getService().getId();
+
+          // 3. Verificamos si ambos coinciden
+          if (actualUserId.equals(newUserId) && actualServiceId.equals(newServiceId)) {
+              // Lanzamos la excepción pasándole los dos IDs que exige el constructor
+              throw new DuplicateReservationException(newUserId, newServiceId);
+          }
+      }
+
+      // 4. Si no hay duplicados, guardamos y retornamos
+      reservationDao.save(newReservation);
+      return newReservation;
   }
 
   // Ejercicio 10
