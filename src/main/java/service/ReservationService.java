@@ -105,30 +105,25 @@ public class ReservationService {
       Reservation newReservation,
       ReservationDao reservationDao)
       throws DuplicateReservationException, DataAccessException {
-
-      // 1. Extraemos los IDs de la nueva reserva
+      // Sacamos los IDs de la nueva reserva
       String newUserId = newReservation.getOwner().getId();
       String newServiceId = newReservation.getService().getId();
-
-      // 2. Recorremos la lista de reservas existentes
+      // Recorremos la lista de reservas existentes
       for (Reservation resActual : existingReservations) {
           String actualUserId = resActual.getOwner().getId();
           String actualServiceId = resActual.getService().getId();
-
-          // 3. Verificamos si ambos coinciden
+          // Verificamos si coinciden
           if (actualUserId.equals(newUserId) && actualServiceId.equals(newServiceId)) {
-              // Lanzamos la excepción pasándole los dos IDs que exige el constructor
+              // Lanzamos la excepcion
               throw new DuplicateReservationException(newUserId, newServiceId);
           }
       }
-
-      // 4. Si no hay duplicados, guardamos y retornamos
-      reservationDao.save(newReservation);
-      return newReservation;
-  }
-
-  // Ejercicio 10
-  public void exportReservationsToCsv(
+              reservationDao.save(newReservation);
+              return newReservation;
+      }
+    // Ejercicio 10
+    public void exportReservationsToCsv(
+        // Si no hay duplicados, guarda y retorna
       List<Reservation> reservations, ReservationExportDao exportDao) throws DataAccessException {
     throw new UnsupportedOperationException("Ejercicio 10: implement exportReservationsToCsv");
   }
